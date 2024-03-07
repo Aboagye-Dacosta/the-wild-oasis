@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ReactQueryDevtools from "@tanstack/react-query-devtools";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import ReactQeue
 
 import Account from "./pages/Account";
 import Bookings from "./pages/Bookings";
@@ -34,7 +34,6 @@ function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
-        <ReactQueryDevtools />
       </QueryClientProvider>
     </>
   );
