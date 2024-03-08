@@ -1,4 +1,14 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import PropTypes from "prop-types";
+import { toast } from "react-hot-toast";
 import styled from "styled-components";
+import { useState } from "react";
+
+import { deleteCabin } from "../../services/apiCabins";
+import Button from "../../ui/Button";
+import Row from "../../ui/Row";
+import { formatCurrency } from "../../utils/helpers";
+import CreateCabinForm from "./CreateCabinForm";
 
 const TableRow = styled.div`
   display: grid;
@@ -38,3 +48,74 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
+function CabinRow({ cabin }) {
+  const queryClient = useQueryClient();
+  const [openEditCabin, setOpenEditCabin] = useState(false);
+  const {
+    id: cabinId,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+  } = cabin;
+  const {
+    isPending: isDeleting,
+    mutate,
+    isPaused,
+  } = useMutation({
+    mutationFn: deleteCabin,
+    onSuccess: () => {
+      toast.success(`Successfully deleted cabin ${name}`);
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message + " " + name);
+    },
+  });
+
+  const handleDeleteCabin = (id) => {
+    if (confirm("Continue to delete cabin")) {
+      mutate(id);
+    }
+  };
+
+  return (
+    <>
+      <TableRow role="row">
+        <Img src={image} />
+        <Cabin>{name}</Cabin>
+        <div>fits up to {maxCapacity} guest</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        <Discount>{formatCurrency(discount)}</Discount>
+        <Row type="horizontal">
+          <Button
+            variation="tertiary"
+            size="small"
+            onClick={() => setOpenEditCabin((edit) => !edit)}
+          >
+            Edit
+          </Button>
+          <Button
+            variation="danger"
+            size="small"
+            onClick={() => handleDeleteCabin(cabinId)}
+            disabled={isDeleting}
+          >
+            {isDeleting && !isPaused && <span className="loader"></span>} Delete
+          </Button>
+        </Row>
+      </TableRow>
+      {openEditCabin && <CreateCabinForm cabinForEdit = {cabin} />}
+    </>
+  );
+}
+
+CabinRow.propTypes = {
+  cabin: PropTypes.object,
+};
+
+export default CabinRow;

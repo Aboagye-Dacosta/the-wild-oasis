@@ -48,13 +48,18 @@ const variations = {
   `,
 };
 
-const Button = styled.button.attrs(({size, variation}) => ({
+const Button = styled.button.attrs(({ size, variation }) => ({
   size: size || "medium",
   variation: variation || "primary",
 }))`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:0.5rem;
 
   ${(props) => {
     switch (props.size) {
