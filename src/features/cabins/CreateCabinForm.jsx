@@ -1,22 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { v4 as uuidv4 } from "uuid";
 
-import { createCabin, updateCabin } from "../../services/apiCabins";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
-function CreateCabinForm({ cabinForEdit = {} }) {
-  const { id: editId, ...editDefault } = cabinForEdit;
+function CreateCabinForm({ cabinToEdit = {} }) {
+  const { id: editId, ...editDefault } = cabinToEdit;
   const isEditSession = Boolean(editId);
-
-  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -25,64 +21,33 @@ function CreateCabinForm({ cabinForEdit = {} }) {
     formState: { errors },
   } = useForm({ defaultValues: isEditSession ? editDefault : {} });
 
-  const { isPending: isCreating, mutate } = useMutation({
-    mutationFn: isEditSession ? updateCabin : createCabin,
-    onMutate: () => {
-      queryClient.cancelQueries({
-        queryKey: ["cabins"],
-      });
-
-      const newData = {
-        id: uuidv4(),
-        ...getValues(),
-      };
-
-      const previousQueryData = queryClient.getQueriesData({
-        queryKey: ["cabins"],
-      });
-
-      queryClient.setQueriesData(["cabins"], [...previousQueryData, newData]);
-      return { id: newData.id };
-    },
-    onSuccess: (data) => {
-      toast.success(
-        `Successfully ${isEditSession ? "updated" : "created"} cabin ${
-          data[0].name
-        }`,
-        {
-          id: "createCabin",
-        }
-      );
-      reset();
-    },
-    onError: (error, _, context) => {
-      toast.error(error.message + " " + getValues().name, {
-        id: "createCabin",
-      });
-      const currentQueryData = queryClient.getQueriesData({
-        queryKey: ["cabins"],
-      });
-
-      queryClient.setQueriesData(
-        {
-          queryKey: ["cabins"],
-        },
-        currentQueryData.filter((data) => data.id !== context.id)
-      );
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-  });
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isEditing, editCabin } = useEditCabin();
+  const isWorking = isCreating || isEditing;
 
   const onSubmitForm = (cabin) => {
-    mutate(
-      isEditSession
-        ? { ...cabin, id: editId, image: cabinForEdit.image }
-        : { ...cabin, image: cabin.image[0] }
-    );
+    const image = typeof cabin.image == "string" ? cabin.image : cabin.image[0];
+    isEditSession
+      ? editCabin(
+          {
+            newCabin: { ...cabin, image },
+            id: editId,
+            image: editDefault.image,
+          },
+          {
+            onSuccess: () => {
+              reset();
+            },
+          }
+        )
+      : createCabin(
+          { newCabin: { ...cabin, image } },
+          {
+            onSuccess: () => {
+              reset();
+            },
+          }
+        );
   };
 
   const onError = (error) => {
@@ -95,7 +60,7 @@ function CreateCabinForm({ cabinForEdit = {} }) {
         <Input
           type="text"
           id="name"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("name", {
             required: {
               value: true,
@@ -117,7 +82,7 @@ function CreateCabinForm({ cabinForEdit = {} }) {
         <Input
           type="number"
           id="maxCapacity"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("maxCapacity", {
             required: {
               value: true,
@@ -131,7 +96,7 @@ function CreateCabinForm({ cabinForEdit = {} }) {
         <Input
           type="number"
           id="regularPrice"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("regularPrice", {
             required: {
               value: true,
@@ -150,7 +115,7 @@ function CreateCabinForm({ cabinForEdit = {} }) {
           type="number"
           id="discount"
           defaultValue={0}
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("discount", {
             validate: (value) =>
               Number(value) < getValues().regularPrice ||
@@ -167,7 +132,6 @@ function CreateCabinForm({ cabinForEdit = {} }) {
           type="number"
           id="description"
           defaultValue=""
-          disabled={isCreating}
           {...register("description", {
             required: {
               value: true,
@@ -181,7 +145,7 @@ function CreateCabinForm({ cabinForEdit = {} }) {
         <FileInput
           id="image"
           accept="image/*"
-          disabled={isCreating}
+          disabled={isWorking}
           {...register("image", {
             required: {
               value: !isEditSession,
@@ -196,8 +160,8 @@ function CreateCabinForm({ cabinForEdit = {} }) {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button type="submit" disabled={isCreating}>
-          {isCreating && <span className="loader"></span>}
+        <Button type="submit" disabled={isWorking}>
+          {isWorking && <span className="loader"></span>}
           {isEditSession ? "Update cabin" : "Create new cabin"}
         </Button>
       </FormRow>
@@ -205,6 +169,6 @@ function CreateCabinForm({ cabinForEdit = {} }) {
   );
 }
 CreateCabinForm.propTypes = {
-  cabinForEdit: PropTypes.object,
+  cabinToEdit: PropTypes.object,
 };
 export default CreateCabinForm;

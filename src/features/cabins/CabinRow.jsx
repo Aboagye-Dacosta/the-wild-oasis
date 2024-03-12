@@ -1,14 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
-import { toast } from "react-hot-toast";
-import styled from "styled-components";
 import { useState } from "react";
+import styled from "styled-components";
 
-import { deleteCabin } from "../../services/apiCabins";
 import Button from "../../ui/Button";
-import Row from "../../ui/Row";
+import ButtonGroup from "../../ui/ButtonGroup";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinForm";
+import { useDeleteCabin } from "./useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -50,8 +48,8 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const queryClient = useQueryClient();
   const [openEditCabin, setOpenEditCabin] = useState(false);
+  const { isDeleting, deleteCabin, isPaused } = useDeleteCabin();
   const {
     id: cabinId,
     name,
@@ -60,26 +58,10 @@ function CabinRow({ cabin }) {
     discount,
     image,
   } = cabin;
-  const {
-    isPending: isDeleting,
-    mutate,
-    isPaused,
-  } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: () => {
-      toast.success(`Successfully deleted cabin ${name}`);
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (error) => {
-      toast.error(error.message + " " + name);
-    },
-  });
 
   const handleDeleteCabin = (id) => {
     if (confirm("Continue to delete cabin")) {
-      mutate(id);
+      deleteCabin(id);
     }
   };
 
@@ -91,9 +73,9 @@ function CabinRow({ cabin }) {
         <div>fits up to {maxCapacity} guest</div>
         <Price>{formatCurrency(regularPrice)}</Price>
         <Discount>{formatCurrency(discount)}</Discount>
-        <Row type="horizontal">
+        <ButtonGroup>
           <Button
-            variation="tertiary"
+            variation="secondary"
             size="small"
             onClick={() => setOpenEditCabin((edit) => !edit)}
           >
@@ -107,9 +89,9 @@ function CabinRow({ cabin }) {
           >
             {isDeleting && !isPaused && <span className="loader"></span>} Delete
           </Button>
-        </Row>
+        </ButtonGroup>
       </TableRow>
-      {openEditCabin && <CreateCabinForm cabinForEdit = {cabin} />}
+      {openEditCabin && <CreateCabinForm cabinToEdit={cabin} />}
     </>
   );
 }
