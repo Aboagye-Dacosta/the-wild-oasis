@@ -35,18 +35,16 @@ export async function createEditCabin({ newCabin, id }) {
   if (!id) {
     query = query
       .insert([{ ...newCabin, image: imagePath }])
-      .select()
-      .single();
+
   }
 
   if (id) {
     query =  query
       .update({ ...newCabin, image: imagePath })
       .eq("id", id)
-      .select();
   }
 
-  const { data, error } = await query;
+  const { data, error } = await query.select().single();
 
   if (error) {
     throw new Error(`Could not ${!isImageUrl ? "create" : "update"} cabin`);

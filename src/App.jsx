@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
+import { getSettings } from "./services/apiSettings";
 import GlobalStyle from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import CustomToaster from "./ui/CustomToaster";
@@ -25,6 +26,10 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  queryClient.prefetchQuery({
+    queryKey: ["settings"],
+    queryFn: getSettings,
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />

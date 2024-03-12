@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { createEditCabin } from "../../services/apiCabins";
 
-export const useEditCabin = () => {
+export const useUpdateCabin = () => {
   const queryClient = useQueryClient();
   const { isPending: isEditing, mutate: editCabin } = useMutation({
     mutationFn: createEditCabin,
@@ -24,7 +24,6 @@ export const useEditCabin = () => {
           queryKey: ["cabins"],
         },
         (oldData) => {
-          console.log(oldData, "from useEditCabin hook");
           return oldData.filter((data) =>
             data.id === id ? newCabinObj : data
           );

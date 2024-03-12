@@ -8,9 +8,9 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 import { useCreateCabin } from "./useCreateCabin";
-import { useEditCabin } from "./useEditCabin";
+import { useUpdateCabin } from "./useUpdateCabin";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
   const { id: editId, ...editDefault } = cabinToEdit;
   const isEditSession = Boolean(editId);
   const {
@@ -22,32 +22,35 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   } = useForm({ defaultValues: isEditSession ? editDefault : {} });
 
   const { isCreating, createCabin } = useCreateCabin();
-  const { isEditing, editCabin } = useEditCabin();
-  const isWorking = isCreating || isEditing;
+  const { isUpdating, editCabin } = useUpdateCabin();
+  const isWorking = isCreating || isUpdating;
 
   const onSubmitForm = (cabin) => {
     const image = typeof cabin.image == "string" ? cabin.image : cabin.image[0];
-    isEditSession
-      ? editCabin(
-          {
-            newCabin: { ...cabin, image },
-            id: editId,
-            image: editDefault.image,
+    if (isEditSession) {
+      setIsUpdating(true);
+      editCabin(
+        {
+          newCabin: { ...cabin, image },
+          id: editId,
+          image: editDefault.image,
+        },
+        {
+          onSuccess: () => {
+            reset();
           },
-          {
-            onSuccess: () => {
-              reset();
-            },
-          }
-        )
-      : createCabin(
-          { newCabin: { ...cabin, image } },
-          {
-            onSuccess: () => {
-              reset();
-            },
-          }
-        );
+          onSettled: () => setIsUpdating(false),
+        }
+      );
+    } else
+      createCabin(
+        { newCabin: { ...cabin, image } },
+        {
+          onSuccess: () => {
+            reset();
+          },
+        }
+      );
   };
 
   const onError = (error) => {
@@ -170,5 +173,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 }
 CreateCabinForm.propTypes = {
   cabinToEdit: PropTypes.object,
+  setIsUpdating: PropTypes.func,
 };
 export default CreateCabinForm;

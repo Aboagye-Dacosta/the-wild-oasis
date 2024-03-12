@@ -28,7 +28,6 @@ export const useCreateCabin = () => {
       return { id: newCabin.id };
     },
     onSuccess: (data) => {
-      console.log(data);
       toast.success(`Successfully created cabin ${data.name}`, {
         id: "createCabin",
       });

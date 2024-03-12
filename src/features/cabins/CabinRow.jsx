@@ -1,11 +1,15 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
+import { MdFileCopy, MdModeEdit } from "react-icons/md";
 import styled from "styled-components";
 
 import Button from "../../ui/Button";
 import ButtonGroup from "../../ui/ButtonGroup";
+import SpinnerSm from "../../ui/SpinnerSm";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinForm";
+import { useCreateCabin } from "./useCreateCabin";
 import { useDeleteCabin } from "./useDeleteCabin";
 
 const TableRow = styled.div`
@@ -49,7 +53,10 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
   const [openEditCabin, setOpenEditCabin] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { isDeleting, deleteCabin, isPaused } = useDeleteCabin();
+
+  const { isCreating, createCabin } = useCreateCabin();
   const {
     id: cabinId,
     name,
@@ -57,6 +64,7 @@ function CabinRow({ cabin }) {
     regularPrice,
     discount,
     image,
+    description,
   } = cabin;
 
   const handleDeleteCabin = (id) => {
@@ -64,6 +72,21 @@ function CabinRow({ cabin }) {
       deleteCabin(id);
     }
   };
+
+  const handleMakeCabinCopy = () => {
+    createCabin({
+      newCabin: {
+        name: `Copy of ${name}`,
+        maxCapacity,
+        regularPrice,
+        discount,
+        image,
+        description,
+      },
+    });
+  };
+
+  const handleIsUpdating = (state) => setIsEditing(state);
 
   return (
     <>
@@ -77,9 +100,18 @@ function CabinRow({ cabin }) {
           <Button
             variation="secondary"
             size="small"
-            onClick={() => setOpenEditCabin((edit) => !edit)}
+            onClick={handleMakeCabinCopy}
+            disabled={isCreating}
           >
-            Edit
+            {isCreating ? <SpinnerSm /> : <MdFileCopy />}
+          </Button>
+          <Button
+            variation="secondary"
+            size="small"
+            onClick={() => setOpenEditCabin((edit) => !edit)}
+            disabled={isEditing}
+          >
+            {isEditing ? <SpinnerSm /> : <MdModeEdit />}
           </Button>
           <Button
             variation="danger"
@@ -87,11 +119,13 @@ function CabinRow({ cabin }) {
             onClick={() => handleDeleteCabin(cabinId)}
             disabled={isDeleting}
           >
-            {isDeleting && !isPaused && <span className="loader"></span>} Delete
+            {isDeleting && !isPaused ? <SpinnerSm /> : <FaTrash />}
           </Button>
         </ButtonGroup>
       </TableRow>
-      {openEditCabin && <CreateCabinForm cabinToEdit={cabin} />}
+      {openEditCabin && (
+        <CreateCabinForm cabinToEdit={cabin} setIsUpdating={handleIsUpdating} />
+      )}
     </>
   );
 }
