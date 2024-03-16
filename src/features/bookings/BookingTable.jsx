@@ -1,9 +1,26 @@
-import BookingRow from "./BookingRow";
-import Table from "../../ui/Table";
+import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
+import Pagination from "../../ui/Pagination";
+import { useSearchContext } from "../../ui/SearchFilter";
+import Spinner from "../../ui/Spinner";
+import Table from "../../ui/Table";
+import BookingRow from "./BookingRow";
+import { useBookings } from "./useBooking";
 
 function BookingTable() {
-  const bookings = [];
+  const { searchValue, setDisabled } = useSearchContext();
+  const { isPending, bookings=[], count } = useBookings();
+
+ 
+  
+  if (isPending) return <Spinner />;
+
+  if (!bookings.length) {
+    // if (searchValue == "") {
+    //   setDisabled(true);
+    // }
+    return <Empty resource="bookings" />;
+  }
 
   return (
     <Menus>
@@ -23,6 +40,9 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <Table.Footer>
+          <Pagination count={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

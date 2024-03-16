@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { MdFileCopy, MdModeEdit } from "react-icons/md";
 import styled from "styled-components";
 
+import Button from "../../ui/Button";
+import ButtonGroup from "../../ui/ButtonGroup";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
+import SpinnerSm from "../../ui/SpinnerSm";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinForm";
 import { useCreateCabin } from "./useCreateCabin";
@@ -51,9 +54,10 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const { isDeleting, deleteCabin } = useDeleteCabin();
-  const { createCabin } = useCreateCabin();
+  const [isEditing, setIsEditing] = useState(false);
+  const { isDeleting, deleteCabin, isPaused } = useDeleteCabin();
 
+  const { isCreating, createCabin } = useCreateCabin();
   const {
     id: cabinId,
     name,
@@ -83,36 +87,41 @@ function CabinRow({ cabin }) {
     });
   };
 
+  const handleIsUpdating = (state) => setIsEditing(state);
+
   return (
     <TableRow role="row">
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>fits up to {maxCapacity} guest</div>
       <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>
-        {discount === 0 ? <span>&mdash;</span> : formatCurrency(discount)}
-      </Discount>
-      <Modal>
-        <Menus.Menu>
-          <Menus.ToggleButton id={cabinId} />
-          <Menus.List id={cabinId}>
-            <Menus.Button onClick={handleMakeCabinCopy} icon={<MdFileCopy />}>
-              Make copy
-            </Menus.Button>
-
-            <Modal.Open opens="edit">
-              <Menus.Button icon={<MdModeEdit />}>Edit Cabin</Menus.Button>
-            </Modal.Open>
-
-            <Modal.Open opens="confirm-delete">
-              <Menus.Button icon={<FaTrash />}>Delete cabin</Menus.Button>
-            </Modal.Open>
-          </Menus.List>
-
+      <Discount>{formatCurrency(discount)}</Discount>
+      <ButtonGroup>
+        <Button
+          variation="secondary"
+          size="small"
+          onClick={handleMakeCabinCopy}
+          disabled={isCreating}
+        >
+          {isCreating ? <SpinnerSm /> : <MdFileCopy />}
+        </Button>
+        <Modal>
+          <Modal.Open opens="edit">
+            <Button variation="secondary" size="small">
+              {isEditing ? <SpinnerSm /> : <MdModeEdit />}
+            </Button>
+          </Modal.Open>
           <Modal.Window name="edit">
-            <CreateCabinForm cabinToEdit={cabin} />
+            <CreateCabinForm
+              cabinToEdit={cabin}
+              setIsUpdating={handleIsUpdating}
+            />
           </Modal.Window>
-
+          <Modal.Open opens="confirm-delete">
+            <Button variation="danger" size="small">
+              {isDeleting && !isPaused ? <SpinnerSm /> : <FaTrash />}
+            </Button>
+          </Modal.Open>
           <Modal.Window name="confirm-delete">
             <ConfirmDelete
               resourceName="cabins"
@@ -120,8 +129,8 @@ function CabinRow({ cabin }) {
               onConfirm={() => handleDeleteCabin(cabinId)}
             />
           </Modal.Window>
-        </Menus.Menu>
-      </Modal>
+        </Modal>
+      </ButtonGroup>
     </TableRow>
   );
 }

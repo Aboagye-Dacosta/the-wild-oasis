@@ -10,7 +10,7 @@ import Textarea from "../../ui/Textarea";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 
-function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
+function CreateCabinForm({ cabinToEdit = {}, closeModal }) {
   const { id: editId, ...editDefault } = cabinToEdit;
   const isEditSession = Boolean(editId);
   const {
@@ -28,7 +28,6 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
   const onSubmitForm = (cabin) => {
     const image = typeof cabin.image == "string" ? cabin.image : cabin.image[0];
     if (isEditSession) {
-      setIsUpdating(true);
       editCabin(
         {
           newCabin: { ...cabin, image },
@@ -38,8 +37,8 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
         {
           onSuccess: () => {
             reset();
+            closeModal?.();
           },
-          onSettled: () => setIsUpdating(false),
         }
       );
     } else
@@ -48,6 +47,7 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
         {
           onSuccess: () => {
             reset();
+            closeModal?.();
           },
         }
       );
@@ -58,7 +58,10 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmitForm, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmitForm, onError)}
+      type={closeModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -160,7 +163,11 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => closeModal?.()}
+        >
           Cancel
         </Button>
         <Button type="submit" disabled={isWorking}>
@@ -173,6 +180,6 @@ function CreateCabinForm({ cabinToEdit = {}, setIsUpdating = () => {} }) {
 }
 CreateCabinForm.propTypes = {
   cabinToEdit: PropTypes.object,
-  setIsUpdating: PropTypes.func,
+  closeModal: PropTypes.func,
 };
 export default CreateCabinForm;

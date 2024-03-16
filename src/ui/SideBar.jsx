@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import Uploader from "../data/Uploader";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
@@ -10,9 +10,9 @@ const StyledSidebar = styled.aside`
 
   grid-row: 1 /-1;
 
-  display:flex;
-  flex-direction:column;
-  gap:3.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
 `;
 
 function SideBar() {
@@ -20,6 +20,7 @@ function SideBar() {
     <StyledSidebar>
       <Logo />
       <MainNav />
+      <Uploader />
     </StyledSidebar>
   );
 }

@@ -1,7 +1,15 @@
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getCabins() {
-  const { data, error } = await supabase.from("cabins").select("*");
+export async function getCabins({ filter, sortBy }) {
+
+  //NB: building query based on filter options
+
+  let query = supabase.from("cabins").select("*");
+  if (filter.value === "with-discount") query = query.gt(filter.prop, 0);
+  if (filter.value == "no-discount") query.eq(filter.prop, 0);
+  query = query.order(sortBy.prop, { ascending: sortBy.dir === "asc" });
+
+  const { data, error } = await query;
 
   if (error) {
     throw new Error("Could not load cabins");
@@ -33,15 +41,11 @@ export async function createEditCabin({ newCabin, id }) {
   let query = supabase.from("cabins");
 
   if (!id) {
-    query = query
-      .insert([{ ...newCabin, image: imagePath }])
-
+    query = query.insert([{ ...newCabin, image: imagePath }]);
   }
 
   if (id) {
-    query =  query
-      .update({ ...newCabin, image: imagePath })
-      .eq("id", id)
+    query = query.update({ ...newCabin, image: imagePath }).eq("id", id);
   }
 
   const { data, error } = await query.select().single();

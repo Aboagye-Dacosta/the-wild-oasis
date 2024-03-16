@@ -1,12 +1,25 @@
+import BookingTable from "../features/bookings/BookingTable";
+import BookingTableOperations from "../features/bookings/BookingTableOperations";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
+import SearchFilter, { SearchFilterProvider } from "../ui/SearchFilter";
 
 function Bookings() {
   return (
-    <Row type="horizontal">
-      <Heading as="h1">All bookings</Heading>
-      <p>TEST</p>
-    </Row>
+    <SearchFilterProvider>
+      <Row>
+        <Row type="horizontal">
+          <Heading as="h1">All bookings</Heading>
+          <BookingTableOperations />
+        </Row>
+        <Row>
+          <SearchFilter searchableProps={["cabins", "guests"]} />
+        </Row>
+        <Row>
+          <BookingTable />
+        </Row>
+      </Row>
+    </SearchFilterProvider>
   );
 }
 

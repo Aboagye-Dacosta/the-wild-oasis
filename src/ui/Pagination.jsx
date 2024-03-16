@@ -1,3 +1,6 @@
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { useSearchParams } from "react-router-dom";
+import Select from "react-select";
 import styled from "styled-components";
 
 const StyledPagination = styled.div`
@@ -7,7 +10,7 @@ const StyledPagination = styled.div`
   justify-content: space-between;
 `;
 
-const P = styled.p`
+const Paragraph = styled.p`
   font-size: 1.4rem;
   margin-left: 0.8rem;
 
@@ -18,6 +21,7 @@ const P = styled.p`
 
 const Buttons = styled.div`
   display: flex;
+  align-items: center;
   gap: 0.6rem;
 `;
 
@@ -55,3 +59,77 @@ const PaginationButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+const filterOptions = [
+  { label: 10, value: 10 },
+  { label: 15, value: 15 },
+  { label: 25, value: 25 },
+  { label: 50, value: 50 },
+];
+
+function Pagination({ count }) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const pageSize = searchParams.get("count") || filterOptions.at(0).value;
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const pageCount = Math.ceil(count / Number(pageSize));
+
+  const prevValue = searchParams.get("count")
+    ? { value: searchParams.get("count"), label: searchParams.get("count") }
+    : filterOptions.at(0);
+
+  const nextPage = () => {
+    if (currentPage >= pageCount) return;
+    searchParams.set("page", currentPage + 1);
+    searchParams.set("count", pageSize);
+
+    setSearchParams(searchParams);
+  };
+
+  const prevPage = () => {
+    if (currentPage <= 1) return null;
+    searchParams.set("page", currentPage - 1);
+    searchParams.set("count", pageSize);
+
+    setSearchParams(searchParams);
+  };
+
+  const handleChange = (option) => {
+    searchParams.set("count", option.value);
+    setSearchParams(searchParams);
+  };
+
+  if (count <= filterOptions.at(0).value) return null;
+  return (
+    <StyledPagination>
+      <Paragraph>
+        showing <span>{(currentPage - 1) * pageSize + 1}</span> to
+        <span>{currentPage == pageCount ? count : currentPage * pageSize}</span> of <span>{count}</span> items
+      </Paragraph>
+      <Buttons>
+        <span>Show:</span>
+
+        <Select
+          menuPlacement="top"
+          name="paginateSize"
+          defaultValue={prevValue}
+          options={filterOptions}
+          onChange={handleChange}
+        />
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          <HiChevronLeft />
+          <span>Previous</span>
+        </PaginationButton>
+        <PaginationButton
+          onClick={nextPage}
+          disabled={currentPage === pageCount}
+        >
+          <span>Next</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
+  );
+}
+
+export default Pagination;

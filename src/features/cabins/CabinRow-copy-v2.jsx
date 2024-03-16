@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { MdFileCopy, MdModeEdit } from "react-icons/md";
 import styled from "styled-components";
@@ -11,17 +12,17 @@ import CreateCabinForm from "./CreateCabinForm";
 import { useCreateCabin } from "./useCreateCabin";
 import { useDeleteCabin } from "./useDeleteCabin";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Img = styled.img`
   display: block;
@@ -51,9 +52,10 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  const { isDeleting, deleteCabin } = useDeleteCabin();
-  const { createCabin } = useCreateCabin();
+  const [isEditing, setIsEditing] = useState(false);
+  const { isDeleting, deleteCabin, isPaused } = useDeleteCabin();
 
+  const { isCreating, createCabin } = useCreateCabin();
   const {
     id: cabinId,
     name,
@@ -65,9 +67,7 @@ function CabinRow({ cabin }) {
   } = cabin;
 
   const handleDeleteCabin = (id) => {
-    if (confirm("Continue to delete cabin")) {
-      deleteCabin(id);
-    }
+    deleteCabin(id);
   };
 
   const handleMakeCabinCopy = () => {
@@ -83,15 +83,15 @@ function CabinRow({ cabin }) {
     });
   };
 
+  const handleIsUpdating = (state) => setIsEditing(state);
+
   return (
-    <TableRow role="row">
+    <>
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>fits up to {maxCapacity} guest</div>
       <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>
-        {discount === 0 ? <span>&mdash;</span> : formatCurrency(discount)}
-      </Discount>
+      <Discount>{formatCurrency(discount)}</Discount>
       <Modal>
         <Menus.Menu>
           <Menus.ToggleButton id={cabinId} />
@@ -101,28 +101,39 @@ function CabinRow({ cabin }) {
             </Menus.Button>
 
             <Modal.Open opens="edit">
-              <Menus.Button icon={<MdModeEdit />}>Edit Cabin</Menus.Button>
+              <Menus.Button icon={<MdModeEdit />}>Edit cabin</Menus.Button>
             </Modal.Open>
 
             <Modal.Open opens="confirm-delete">
-              <Menus.Button icon={<FaTrash />}>Delete cabin</Menus.Button>
+              <Menus.Button variation="danger" size="small" icon={<FaTrash />}>
+                Delete cabin
+              </Menus.Button>
             </Modal.Open>
+
+            <Modal.Window name="edit">
+              <CreateCabinForm
+                cabinToEdit={cabin}
+                setIsUpdating={handleIsUpdating}
+              />
+            </Modal.Window>
+
+            <Modal.Window name="confirm-delete">
+              <ConfirmDelete
+                resourceName="cabins"
+                disabled={isDeleting}
+                onConfirm={() => handleDeleteCabin(cabinId)}
+              />
+            </Modal.Window>
           </Menus.List>
-
-          <Modal.Window name="edit">
-            <CreateCabinForm cabinToEdit={cabin} />
-          </Modal.Window>
-
-          <Modal.Window name="confirm-delete">
-            <ConfirmDelete
-              resourceName="cabins"
-              disabled={isDeleting}
-              onConfirm={() => handleDeleteCabin(cabinId)}
-            />
-          </Modal.Window>
         </Menus.Menu>
       </Modal>
-    </TableRow>
+      {/* <Menus id="cabin">
+        <Menus.ToggleButton />
+        <Menus.List>
+          <Menus.Button icon={<MdOutlineMoreVert />}>Edit Cabin</Menus.Button>
+        </Menus.List>
+      </Menus> */}
+    </>
   );
 }
 
