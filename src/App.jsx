@@ -17,6 +17,7 @@ import AppLayout from "./ui/AppLayout";
 import CustomToaster from "./ui/CustomToaster";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
+import AuthProvider from "./ui/AuthProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,7 +39,13 @@ function App() {
 
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <AuthProvider>
+                <AppLayout />
+              </AuthProvider>
+            }
+          >
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
