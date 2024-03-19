@@ -72,6 +72,10 @@ function MainNav() {
             <HiOutlineHomeModern />
             <span>Cabins</span>
           </StyledNavLink>
+          <StyledNavLink to="/guests">
+            <HiOutlineHomeModern />
+            <span>Guests</span>
+          </StyledNavLink>
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>

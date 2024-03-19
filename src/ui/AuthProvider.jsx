@@ -14,7 +14,9 @@ const FullPage = styled.div`
 
 function AuthProvider({ children }) {
   const navigate = useNavigate();
-  const { isLoadingUser, isAuthenticated } = useUser();
+  const { isLoadingUser, isAuthenticated, user } = useUser();
+
+  console.log(user);
 
   useEffect(() => {
     if (!isAuthenticated && !isLoadingUser) navigate("/login");

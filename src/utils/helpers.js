@@ -29,10 +29,23 @@ export const formatCurrency = (value) =>
   );
 
 export const searchValueInItem = (value, props, item) => {
-  const propValues = Array.from(props, (prop) => item[prop]);
+  const propValues = Array.from(
+    props,
+    (prop) =>
+      item[
+        prop
+          .split(" ")
+          .map((m, i) =>
+            i == 0 ? m : m.slice(0, 1).toUpperCase() + m.slice(1)
+          )
+          .join("")
+      ]
+  );
 
+  console.log(propValues, "from searching");
   for (const obj of propValues) {
     if (typeof obj === "string" && obj.includes(value)) {
+      console.log("entered here");
       return true;
     }
 
