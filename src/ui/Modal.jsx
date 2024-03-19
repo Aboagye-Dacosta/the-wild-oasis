@@ -54,6 +54,8 @@ const Button = styled.button`
   }
 `;
 
+const WindowBody = styled.div`overflow: auto;`
+
 const ModalContext = createContext();
 
 function Modal({ children }) {
@@ -73,7 +75,6 @@ function Open({ children, opens: opensWindowName }) {
 
   const clone = cloneElement(children, {
     onClick: () => {
-      console.log("clicked from modals");
       openWindow(opensWindowName);
     },
   });
@@ -93,7 +94,7 @@ function Window({ children, name: windowName }) {
         <Button onClick={closeModal}>
           <HiXMark />
         </Button>
-         <div>{cloneElement(children, { closeModal })}</div>
+         <WindowBody>{cloneElement(children, { closeModal })}</WindowBody>
       </StyledModal>
     </Overlay>,
     document.body

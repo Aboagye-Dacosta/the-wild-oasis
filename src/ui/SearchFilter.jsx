@@ -108,6 +108,7 @@ function SearchFilter({ searchableProps = [] }) {
           size="small"
           onClick={handleSubmit}
           disabled={isDisabled || !searchValue}
+          tooltip="search"
         >
           Search
         </Button>

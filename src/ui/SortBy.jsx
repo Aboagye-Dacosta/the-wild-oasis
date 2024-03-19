@@ -1,7 +1,10 @@
+import { HiOutlineArrowLongDown, HiOutlineArrowLongUp } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import styled from "styled-components";
+
+import Row from "./Row";
 
 const StyledSortBy = styled.div`
   display: flex;
@@ -12,8 +15,23 @@ const StyledSortBy = styled.div`
 `;
 
 const Label = styled.span`
-  font-weight: 500;
-  color: var(--color-grey-600);
+  color: var(--color-grey-0);
+  background-color: var(--color-brand-600);
+  padding: 0.5rem;
+  border-radius: var(--border-radius-sm);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  & svg {
+    color: var(--color-grey-700);
+  }
+
+  .active-sort-dir {
+    color: var(--color-grey-0);
+  }
 `;
 
 const animated = makeAnimated();
@@ -22,6 +40,7 @@ const capitalize = (value) =>
 
 function SortBy({ options = [] }) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const currentDirection = searchParams.get("dir") || "asc";
 
   const directionOptions = [
     { label: "Asc", value: "asc" },
@@ -56,8 +75,25 @@ function SortBy({ options = [] }) {
 
   return (
     <StyledSortBy>
-      <Label>Sort:</Label>
+      <Label>
+        <Row type="horizontal">
+          <HiOutlineArrowLongUp
+            className={currentDirection == "asc" ? "active-sort-dir" : ""}
+          />
+          <HiOutlineArrowLongDown
+            className={currentDirection == "desc" ? "active-sort-dir" : ""}
+          />
+        </Row>
+        <span> Sort</span>
+      </Label>
       <Select
+        styles={{
+          control: ({ styles, ...rem }) => ({
+            ...styles,
+            ...rem,
+            width: "15rem",
+          }),
+        }}
         name="property"
         options={options}
         components={animated}
@@ -67,6 +103,13 @@ function SortBy({ options = [] }) {
       />
       <Select
         name="direction"
+        styles={{
+          control: ({ styles, ...rem }) => ({
+            ...styles,
+            ...rem,
+            width: "10rem",
+          }),
+        }}
         closeMenuOnSelect={true}
         defaultValue={defaultDirectionValue}
         options={directionOptions}

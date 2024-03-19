@@ -7,14 +7,14 @@ export async function getBookings({ filter, sortBy, page, pageSize }) {
   let query = supabase
     .from("bookings")
     .select(
-      "created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guests(fullName,email)",
+      "id,created_at,startDate,endDate,numNights,numGuests,totalPrice,status,cabins(name),guests(fullName,email)",
       { count: "exact" }
     );
 
   query = query.order(sortBy.prop, {
     ascending: sortBy.dir === "asc",
   });
-  if (filter.value !== "all") query.eq(filter.prop, "unconfirmed");
+  if (filter.value !== "all") query.eq(filter.prop, filter.value);
 
   const { error, data, count } = await query.range(paginate.from, paginate.to);
 
@@ -101,6 +101,30 @@ export async function updateBooking(id, obj) {
   if (error) {
     throw new Error("Booking could not be updated");
   }
+  return data;
+}
+export async function createBooking({ guest, booking }) {
+  const {
+    data: { id },
+    error,
+  } = await supabase.from("guests").insert(guest).select().single();
+
+  if (error) {
+    throw new Error("Guest could not be created");
+  }
+
+  // console.log(id, booking);
+
+  const { data, error: bookingError } = await supabase
+    .from("bookings")
+    .insert({ ...booking, guestId: id })
+    .select();
+
+  if (bookingError) {
+    await supabase.from("guests").delete().eq("id", id);
+    throw new Error("Booking could not be created");
+  }
+
   return data;
 }
 

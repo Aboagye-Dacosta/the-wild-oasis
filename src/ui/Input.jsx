@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Input = styled.input.attrs((type, ...rest) => ({
+const Input = styled.input.attrs(({type, ...rest}) => ({
   ...rest,
   type: type || "text",
 }))`

@@ -5,14 +5,12 @@ import { useSearchContext } from "../../ui/SearchFilter";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import BookingRow from "./BookingRow";
-import { useBookings } from "./useBooking";
+import { useBookings } from "./useBookings";
 
 function BookingTable() {
   const { searchValue, setDisabled } = useSearchContext();
-  const { isPending, bookings=[], count } = useBookings();
+  const { isPending, bookings = [], count } = useBookings();
 
- 
-  
   if (isPending) return <Spinner />;
 
   if (!bookings.length) {
@@ -22,9 +20,10 @@ function BookingTable() {
     return <Empty resource="bookings" />;
   }
 
+  console.log(bookings);
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 1fr">
         <Table.Header>
           <div>Cabin</div>
           <div>Guest</div>

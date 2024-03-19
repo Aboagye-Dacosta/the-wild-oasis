@@ -1,21 +1,44 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
+import styled from "styled-components";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
-import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
+import Input from "../../ui/Input";
+import SpinnerSm from "../../ui/SpinnerSm";
+import { useAuthLogin } from "./useAuthLogin";
+
+const StyledForm = styled(Form)`
+  background-color: var(--color-grey-0);
+  width: 40rem;
+  padding: 3rem 3rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 0 auto;
+`;
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { isLoggingInUser, login } = useAuthLogin();
 
-  function handleSubmit() {}
+  const [email, setEmail] = useState("dacosta@gmail.com");
+  const [password, setPassword] = useState("pas1234");
+
+  function handleSubmit() {
+    if (!email || !password)
+      return toast.error("email and password are required");
+    login({ email, password });
+  }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleSubmit}>
       <FormRowVertical label="Email address">
         <Input
           type="email"
           id="email"
+          disabled={isLoggingInUser}
           // This makes this form better for password managers
           autoComplete="username"
           value={email}
@@ -26,15 +49,25 @@ function LoginForm() {
         <Input
           type="password"
           id="password"
+          disabled={isLoggingInUser}
           autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button size="large">Login</Button>
+        <Button size="medium" disabled={isLoggingInUser} onClick={handleSubmit}>
+          {isLoggingInUser ? (
+            <>
+              <SpinnerSm />
+              Logging in
+            </>
+          ) : (
+            "Login"
+          )}
+        </Button>
       </FormRowVertical>
-    </Form>
+    </StyledForm>
   );
 }
 

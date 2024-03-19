@@ -48,18 +48,19 @@ const variations = {
   `,
 };
 
-const Button = styled.button.attrs(({ size, variation }) => ({
+const StyledButton = styled.button.attrs(({ size, variation, tooltip }) => ({
   size: size || "medium",
   variation: variation || "primary",
+  tooltip: tooltip || null,
 }))`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
-
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap:0.5rem;
+  gap: 0.5rem;
 
   ${(props) => {
     switch (props.size) {
@@ -83,5 +84,75 @@ const Button = styled.button.attrs(({ size, variation }) => ({
     }
   }}
 `;
+
+const StyledTooltip = styled.span.attrs(({ tooltip }) => ({
+  tooltip: tooltip || null,
+}))`
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  height: 3rem;
+  padding: 0.5rem;
+  background-color: var(--color-grey-0);
+  display: none;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-grey-400);
+  text-transform: lowercase;
+  justify-content: center;
+  align-items: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 10px;
+    left: 50%;
+    top: -10px;
+    transform: translateX(-50%);
+    clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%);
+    background-color: var(--color-grey-0);
+    border-bottom: none;
+  }
+
+  ${(props) =>
+    props.tooltip
+      ? css`
+          .btn:hover & {
+            display: flex;
+          }
+        `
+      : null}
+`;
+
+function Tooltip({ tooltip }) {
+  return <StyledTooltip tooltip={tooltip}>{tooltip}</StyledTooltip>;
+}
+
+function Button({
+  children,
+  size,
+  variation,
+  tooltip,
+  onClick,
+  disabled,
+  type = "button",
+}) {
+  return (
+    <StyledButton
+      size={size}
+      variation={variation}
+      className="btn"
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+    >
+      <Tooltip tooltip={tooltip} />
+      {children}
+    </StyledButton>
+  );
+}
 
 export default Button;
