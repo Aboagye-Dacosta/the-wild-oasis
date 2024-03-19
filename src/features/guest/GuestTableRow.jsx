@@ -1,7 +1,3 @@
-import { FaTrash } from "react-icons/fa";
-import Button from "../../ui/Button";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import TableImg from "../../ui/TableImg";
 import { useDeleteGuest } from "./useDeleteGuest";
