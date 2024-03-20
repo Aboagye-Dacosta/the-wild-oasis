@@ -1,5 +1,32 @@
 import supabase from "./supabase";
 
+export async function getGuest(id) {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error("Guest not found");
+  }
+
+  return data;
+}
+
+export async function getGuestBookings(id) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*,cabins(*)")
+    .eq("guestId", id);
+
+  if (error) {
+    throw new Error("Guest not found");
+  }
+
+  return data;
+}
+
 export async function getGuests({ page, pageSize, sortBy }) {
   const paginate = { from: page * pageSize, to: (page + 1) * pageSize - 1 };
 

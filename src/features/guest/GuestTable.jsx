@@ -11,14 +11,14 @@ function GuestTable() {
   if (isLoadingGuests) return <Spinner />;
   if (!guests.length) return <Empty resource="guests" />;
   return (
-    <Table columns="0.6fr 2.2fr 2.2fr 1.6fr 1fr 0.7rem">
+    <Table columns="0.6fr 2.2fr 2.2fr 1.6fr 1fr 2rem">
       <Table.Header>
         <div></div>
         <div>Full Name</div>
         <div>Email</div>
         <div>Nationality</div>
         <div>National ID</div>
-        
+        <div></div>
       </Table.Header>
       <Table.Body
         data={guests}

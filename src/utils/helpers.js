@@ -42,7 +42,7 @@ export const searchValueInItem = (value, props, item) => {
       ]
   );
 
-  console.log(propValues, "from searching");
+  
   for (const obj of propValues) {
     if (typeof obj === "string" && obj.includes(value)) {
       console.log("entered here");

@@ -19,6 +19,7 @@ import GlobalStyle from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import AuthProvider from "./ui/AuthProvider";
 import CustomToaster from "./ui/CustomToaster";
+import Guest from "./pages/Guest";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ function App() {
             <Route path="check-in/:bookingId" element={<Checkin />} />
             <Route path="cabins" element={<Cabins />} />
             <Route path="guests" element={<Guests />} />
+            <Route path="guests/:guestId" element={<Guest />} />
             <Route path="settings" element={<Settings />} />
             <Route path="account" element={<Account />} />
             <Route path="users" element={<Users />} />

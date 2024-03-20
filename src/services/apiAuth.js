@@ -28,3 +28,13 @@ export async function getUser() {
 
   return data;
 }
+
+export async function logout() {
+  const { data, error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
