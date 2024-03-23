@@ -1,4 +1,4 @@
-import Form from "../../ui/Form";
+import FormWithBackground from "../../ui/FormWithBackground";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
@@ -27,7 +27,7 @@ function UpdateSettingsForm() {
   }
 
   return (
-    <Form>
+    <FormWithBackground>
       <FormRow label="Minimum nights/booking">
         <Input
           type="number"
@@ -64,7 +64,7 @@ function UpdateSettingsForm() {
           disabled={isUpdating}
         />
       </FormRow>
-    </Form>
+    </FormWithBackground>
   );
 }
 

@@ -1,6 +1,6 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
-import Select from "react-select";
+import Select from "./Select";
 import styled from "styled-components";
 
 const StyledPagination = styled.div`

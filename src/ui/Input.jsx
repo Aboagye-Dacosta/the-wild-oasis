@@ -9,6 +9,8 @@ const Input = styled.input.attrs(({type, ...rest}) => ({
   border: none;
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-sm);
+  background-color: var(--color-grey-0);
+  color: var(color-grey-700);
 `;
 
 

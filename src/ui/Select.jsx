@@ -1,15 +1,49 @@
-import styled from "styled-components";
+import SelectComponent from "react-select";
+import { useDarkMode } from "../context/DarkModeContext";
 
-const StyledSelect = styled.select`
-  font-size: 1.4rem;
-  padding: 0.8rem 1.2rem;
-  border: 1px solid
-    ${(props) =>
-      props.type === "white"
-        ? "var(--color-grey-100)"
-        : "var(--color-grey-300)"};
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-grey-0);
-  font-weight: 500;
-  box-shadow: var(--shadow-sm);
-`;
+function Select(props) {
+  const { isDarkMode } = useDarkMode();
+  return (
+    <SelectComponent
+      {...props}
+      styles={{
+        control: (props) => ({
+          ...props,
+          backgroundColor: "var(--color-grey-0)",
+          color: "var(--color-grey-700)",
+          border: "none",
+        }),
+        menu: (props) => ({
+          ...props,
+          backgroundColor: "var(--color-grey-0)",
+          color: "var(--color-grey-700)",
+          border: "none",
+        }),
+        option: (styles, { isSelected }) => ({
+          ...styles,
+          backgroundColor: isSelected
+            ? "var(--color-brand-700)"
+            : "var(--color-grey-0)",
+          color:
+            isSelected && isDarkMode
+              ? "var(--color-grey-700)"
+              : isSelected && !isDarkMode
+              ? "var(--color-grey-0)"
+              : "var(--color-grey-700)",
+          // border: "none",
+          ":hover": {
+            backgroundColor: "var(--color-brand-700)",
+            color: "#fff",
+          },
+        }),
+        singleValue: (styles) => ({
+          ...styles,
+          color: "var(--color-grey-700)",
+          fontSize: "inherit",
+        }),
+      }}
+    />
+  );
+}
+
+export default Select;

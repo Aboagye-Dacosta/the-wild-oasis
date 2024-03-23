@@ -1,6 +1,6 @@
 import { HiOutlineArrowLongDown, HiOutlineArrowLongUp } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
-import Select from "react-select";
+import Select from "./Select";
 import makeAnimated from "react-select/animated";
 import styled from "styled-components";
 
@@ -31,6 +31,10 @@ const Label = styled.span`
 
   .active-sort-dir {
     color: var(--color-grey-0);
+  }
+
+  & span {
+    color: #fff
   }
 `;
 
