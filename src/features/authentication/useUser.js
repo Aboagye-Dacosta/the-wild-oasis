@@ -7,8 +7,6 @@ export function useUser() {
     queryFn: getUser,
   });
 
-  console.log(data?.user?.role);
-
   return {
     isLoadingUser,
     user: data?.user,

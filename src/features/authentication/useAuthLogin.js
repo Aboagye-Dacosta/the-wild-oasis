@@ -11,7 +11,7 @@ export function useAuthLogin() {
     mutationFn: loginApi,
     onSuccess: (data) => {
       toast.success("You have successfully logged in ");
-      queryClient.setQueriesData(["user"], data);
+      queryClient.setQueryData(["user"], data);
       navigate("/");
     },
     onError: (error) => toast.error(error.message),

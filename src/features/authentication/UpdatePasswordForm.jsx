@@ -1,23 +1,23 @@
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
-import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
+import FormWithBackground from "../../ui/FormWithBackground";
 import { useUpdateUser } from "./useUpdateUser";
 
 function UpdatePasswordForm() {
   const { register, handleSubmit, formState, getValues, reset } = useForm();
   const { errors } = formState;
 
-  const { updateUser, isUpdating } = useUpdateUser();
+  const { updateUser, isUpdatingUser } = useUpdateUser();
 
   function onSubmit({ password }) {
     updateUser({ password }, { onSuccess: reset });
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <FormWithBackground onSubmit={handleSubmit(onSubmit)}>
       <FormRow
         label="Password (min 8 characters)"
         error={errors?.password?.message}
@@ -26,7 +26,7 @@ function UpdatePasswordForm() {
           type="password"
           id="password"
           autoComplete="current-password"
-          disabled={isUpdating}
+          disabled={isUpdatingUser}
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -45,7 +45,7 @@ function UpdatePasswordForm() {
           type="password"
           autoComplete="new-password"
           id="passwordConfirm"
-          disabled={isUpdating}
+          disabled={isUpdatingUser}
           {...register("passwordConfirm", {
             required: "This field is required",
             validate: (value) =>
@@ -57,9 +57,9 @@ function UpdatePasswordForm() {
         <Button onClick={reset} type="reset" variation="secondary">
           Cancel
         </Button>
-        <Button disabled={isUpdating}>Update password</Button>
+        <Button disabled={isUpdatingUser}>Update password</Button>
       </FormRow>
-    </Form>
+    </FormWithBackground>
   );
 }
 
