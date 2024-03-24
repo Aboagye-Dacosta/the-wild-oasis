@@ -1,4 +1,9 @@
+import PropTypes from "prop-types";
 import styled from "styled-components";
+
+import GlobalStyle from "../styles/GlobalStyles";
+import Button from "./Button";
+import Heading from "./Heading";
 
 const StyledErrorFallback = styled.main`
   height: 100vh;
@@ -29,3 +34,27 @@ const Box = styled.div`
     color: var(--color-grey-500);
   }
 `;
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <>
+      <GlobalStyle />
+      <StyledErrorFallback>
+        <Box>
+          <Heading as="h1">Oops! something went wrong</Heading>
+          <p>{error.message}</p>
+          <Button onClick={resetErrorBoundary}>Resest</Button>
+        </Box>
+      </StyledErrorFallback>
+    </>
+  );
+}
+
+ErrorFallback.propTypes = {
+  error: PropTypes.shape({
+    message: PropTypes.any
+  }),
+  resetErrorBoundary: PropTypes.func
+}
+
+export default ErrorFallback;

@@ -8,6 +8,6 @@ export function useTodaysActivity() {
       queryKey: ["todays-activity"],
       queryFn: getStaysTodayActivity,
     });
-
+  
   return { isLoadingTodaysActivities, todaysActivities };
 }

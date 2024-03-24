@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import styled, { css } from "styled-components";
 
 const sizes = {
@@ -61,6 +62,7 @@ const StyledButton = styled.button.attrs(({ size, variation, tooltip }) => ({
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  /* white-space: nowrap; */
 
   ${(props) => {
     switch (props.size) {
@@ -131,28 +133,26 @@ function Tooltip({ tooltip }) {
   return <StyledTooltip tooltip={tooltip}>{tooltip}</StyledTooltip>;
 }
 
+Tooltip.propTypes = {
+  tooltip: PropTypes.any
+}
+
 function Button({
   children,
-  size,
-  variation,
   tooltip,
-  onClick,
-  disabled,
-  type = "button",
+  ...props
 }) {
   return (
-    <StyledButton
-      size={size}
-      variation={variation}
-      className="btn"
-      onClick={onClick}
-      disabled={disabled}
-      type={type}
-    >
+    <StyledButton {...props}>
       <Tooltip tooltip={tooltip} />
       {children}
     </StyledButton>
   );
+}
+
+Button.propTypes = {
+  children: PropTypes.any,
+  tooltip: PropTypes.any
 }
 
 export default Button;
