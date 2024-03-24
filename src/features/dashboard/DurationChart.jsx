@@ -1,4 +1,16 @@
+import PropTypes from "prop-types"
 import styled from "styled-components";
+import Heading from "../../ui/Heading";
+
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
@@ -130,3 +142,60 @@ function prepareData(startData, stays) {
 
   return data;
 }
+
+function DurationChart({ confirmedStays }) {
+  const { isDarkMode } = useDarkMode();
+  const startData = isDarkMode ? startDataDark : startDataLight;
+  const data = prepareData(startData, confirmedStays);
+  return (
+    <ChartBox>
+      <Heading as="h2">Duration chart for sales</Heading>
+      <ResponsiveContainer>
+        <PieChart width="100%">
+          <Pie
+            dataKey="value"
+            nameKey="duration"
+            data={data}
+            innerRadius={85}
+            outerRadius={110}
+            cx={"40%"}
+            cy={"50%"}
+            paddingAngle={3}
+          >
+            {data.map((entry) => (
+              <Cell
+                color={entry.color}
+                fill={entry.color}
+                stroke={entry.color}
+                key={entry}
+              />
+            ))}
+          </Pie>
+          <Tooltip
+            active={true}
+            contentStyle={{
+              backgroundColor: "var(--color-grey-0)",
+            }}
+            itemStyle={{
+              color: "var(--color-grey-700)",
+            }}
+          />
+          <Legend
+            verticalAlign="middle"
+            align="right"
+            width="30%"
+            layout="vertical"
+            iconSize="15"
+            iconType="circle"
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartBox>
+  );
+}
+
+DurationChart.propTypes = {
+  confirmedStays: PropTypes.any
+}
+
+export default DurationChart;

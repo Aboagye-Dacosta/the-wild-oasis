@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import { cloneElement, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import Select,{components} from "react-select";
+import { components } from "react-select";
 import styled from "styled-components";
 
 import Button from "../../ui/Button";
@@ -10,13 +10,13 @@ import Form from "../../ui/Form";
 import FormRow, { Error } from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Row from "../../ui/Row";
+import Select from "../../ui/Select";
 
 import Checkbox from "../../ui/Checkbox";
 import FieldsetBox from "../../ui/FieldsetBox";
 import SpinnerSm from "../../ui/SpinnerSm";
 import Textarea from "../../ui/Textarea";
 
-import CustomSelect from "../../ui/CustomSelect";
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 import { useCabins } from "../cabins/useCabins";
 import { useSettings } from "../settings/useSettings";

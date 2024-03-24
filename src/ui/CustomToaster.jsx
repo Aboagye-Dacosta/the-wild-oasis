@@ -1,6 +1,6 @@
 import { ToastBar, Toaster, toast } from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Icon = styled(IoMdClose)`
   font-size: 2rem;
@@ -34,6 +34,39 @@ const IconHolder = styled.span`
   }
 `;
 
+const StyledToast = styled.div`
+  display: flex;
+  align-items: center;
+  /* background-color: var(--color-grey-0); */
+  /* padding: 1rem 1.7rem; */
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 1rem;
+    ${(props) => {
+      console.log(props.type);
+      switch (props.type) {
+        case "error":
+          return css`
+            background-color: var(--color-red-700);
+          `;
+        case "success":
+          return css`
+            background-color: var(--color-green-100);
+          `;
+        default:
+          return css`
+            background-color: var(--color-yellow-100);
+          `;
+      }
+    }};
+  }
+`;
+
 function CustomToaster() {
   return (
     <Toaster
@@ -45,15 +78,9 @@ function CustomToaster() {
       toastOptions={{
         success: {
           duration: 3000,
-          style: {
-            backgroundColor: "var(--color-green-100)",
-          },
         },
         error: {
           duration: 4000,
-          style: {
-            background: " var(--color-red-100)",
-          },
         },
         style: {
           backgroundColor: "var(--color-grey-0)",
@@ -61,19 +88,21 @@ function CustomToaster() {
           color: "var(--color-grey-700)",
           maxWidth: "500px",
           padding: "16px 24px",
+          boxShadow: "var(--shadow-lg)",
+          overflow: "hidden",
         },
       }}
     >
       {(t) => (
         <ToastBar toast={t}>
           {({ icon, message }) => (
-            <>
+            <StyledToast type={t.type}>
               {icon}
               {message}
               <IconHolder>
                 <Icon onClick={() => toast.dismiss(t.id)} />
               </IconHolder>
-            </>
+            </StyledToast>
           )}
         </ToastBar>
       )}
