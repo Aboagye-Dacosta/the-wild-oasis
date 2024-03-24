@@ -63,11 +63,11 @@ export async function getStaysAfterDate(date) {
     .lte("startDate", getToday());
 
   if (error) {
-    console.log(error);
+
     throw new Error("Bookings could not get loaded");
   }
 
-  console.log(data, "❤️❤️--logging data");
+
   return data;
 }
 
@@ -114,7 +114,7 @@ export async function createBooking({ guest, booking }) {
     throw new Error("Guest could not be created");
   }
 
-  // console.log(id, booking);
+
 
   const { data, error: bookingError } = await supabase
     .from("bookings")

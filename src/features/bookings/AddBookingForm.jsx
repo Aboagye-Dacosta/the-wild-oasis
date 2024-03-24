@@ -29,16 +29,16 @@ const StyledRow = styled(Row)`
   padding: 2rem 0;
   align-items: flex-end;
 `;
-const StyledCountryOption = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 0.5rem;
+// const StyledCountryOption = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: start;
+//   gap: 0.5rem;
 
-  & img {
-    width: 2rem;
-  }
-`;
+//   & img {
+//     width: 2rem;
+//   }
+// `;
 const ControlledSelect = ({ children, control, message, name, onChange }) => {
   return (
     <Controller
@@ -339,7 +339,7 @@ function AddBookingForm({ closeModal }) {
               <Checkbox
                 register={registerBooking("hasBreakfast", {
                   onChange: (e) => {
-                    console.log(e.target.checked);
+
                     if (e.target.checked == true) {
                       setHasBreakfast(true);
                     } else if (e.target.checked == false) {

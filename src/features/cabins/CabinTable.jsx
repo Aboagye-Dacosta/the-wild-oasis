@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import PropTypes from "prop-types";
 import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
@@ -6,11 +6,7 @@ import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
 
 function CabinTable({ filterKey }) {
-  
-
   const { isPending, cabins } = useCabins(filterKey);
-
-  console.log(cabins)
 
   if (isPending) return <Spinner />;
 
@@ -33,5 +29,9 @@ function CabinTable({ filterKey }) {
     </Menus>
   );
 }
+
+CabinTable.propTypes = {
+  filterKey: PropTypes.string,
+};
 
 export default CabinTable;

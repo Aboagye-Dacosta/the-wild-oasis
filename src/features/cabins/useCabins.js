@@ -8,7 +8,7 @@ export const useCabins = () => {
   const sortProperty = searchParams.get("sort-by") || "name";
   const sortDirection = searchParams.get("dir") || "asc";
 
-  // console.log(currentFilterValue)
+
   const filter = {
     prop: "discount",
     value: currentFilterValue,

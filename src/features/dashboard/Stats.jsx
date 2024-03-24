@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import {
   HiOutlineBanknotes,
   HiOutlineBriefcase,
@@ -43,6 +44,13 @@ function Stats({ bookings = [], confirmedStays = [], numDays, numCabins }) {
       />
     </>
   );
+}
+
+Stats.propTypes = {
+  bookings: PropTypes.array,
+  confirmedStays: PropTypes.array,
+  numCabins: PropTypes.number,
+  numDays: PropTypes.number
 }
 
 export default Stats;

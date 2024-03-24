@@ -12,7 +12,7 @@ export function useRecentStays() {
 
   const lastDate = subDays(new Date(), lastDays).toISOString();
 
-  console.log(lastDate);
+
 
   const { isPending: isLoadingRecentStays, data: stays } = useQuery({
     queryKey: ["bookings", `stays-after-${lastDays}-days`],

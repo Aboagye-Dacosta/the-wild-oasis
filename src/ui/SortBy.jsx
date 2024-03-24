@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { HiOutlineArrowLongDown, HiOutlineArrowLongUp } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
 import Select from "./Select";
@@ -121,6 +122,10 @@ function SortBy({ options = [] }) {
       />
     </StyledSortBy>
   );
+}
+
+SortBy.propTypes = {
+  options: PropTypes.array
 }
 
 export default SortBy;

@@ -48,7 +48,7 @@ const StyledToast = styled.div`
     height: 100%;
     width: 1rem;
     ${(props) => {
-      console.log(props.type);
+
       switch (props.type) {
         case "error":
           return css`

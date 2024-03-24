@@ -7,7 +7,7 @@ import { searchValueInItem } from "../../utils/helpers";
 export function useGuests() {
   const { searchValue, searchableProps } = useSearchContext();
 
-  console.log(searchValue, searchableProps);
+
 
   const [searchParams] = useSearchParams();
   let page = searchParams.get("page") || 1;
@@ -36,7 +36,7 @@ export function useGuests() {
       }),
     });
 
-  console.log(guests);
+
 
   return { guests, isLoadingGuests, count };
 }

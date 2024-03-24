@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { MdViewCompact } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
@@ -36,6 +37,10 @@ function GuestTableRow({
       </div>
     </Table.Row>
   );
+}
+
+GuestTableRow.propTypes = {
+  guest: PropTypes.object
 }
 
 export default GuestTableRow;

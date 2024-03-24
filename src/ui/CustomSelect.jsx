@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Select, { components } from "react-select";
 
 function CustomSelect({ render, options, style }) {
@@ -15,7 +16,7 @@ function CustomSelect({ render, options, style }) {
         // Control: ({ children, ...props }) => {
         //   const { getValue } = props;
         //   const option = getValue();
-        //   console.log(children);
+
         //   return (
         //     <components.Control {...props}>
         //       {render(option.at(0), children)}
@@ -36,5 +37,11 @@ function CustomSelect({ render, options, style }) {
     />
   );
 }
+
+CustomSelect.propTypes = {
+  options: PropTypes.array,
+  render: PropTypes.func,
+  style: PropTypes.object,
+};
 
 export default CustomSelect;

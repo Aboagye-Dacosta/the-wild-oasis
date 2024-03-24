@@ -16,8 +16,8 @@ import Button from "../../ui/Button";
 import ConfirmCheckOutAndIn from "../../ui/ConfirmCheckOutAndIn";
 import Modal from "../../ui/Modal";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
-import { useCheckout } from "../check-in-out/useCheckout";
 import { useDeleteBooking } from "../bookings/useDeleteBooking";
+import { useCheckout } from "../check-in-out/useCheckout";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -49,11 +49,9 @@ const Amount = styled.div`
 function GuestBooking({
   booking: {
     id: bookingId,
-    created_at,
     startDate,
     endDate,
     numNights,
-    numGuests,
     totalPrice = 45,
     status = "unconfirmed",
     cabins: { name: cabinName },
@@ -94,7 +92,6 @@ function GuestBooking({
           variation="secondary"
           tooltip="details"
           onClick={() => {
-            console.log("clicked");
             navigate(`/bookings/${bookingId}`, { state: location });
           }}
         >

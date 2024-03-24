@@ -102,7 +102,7 @@ export const useBookings = () => {
 
   const pageCount = Math.ceil(count / pageSize);
   if (page + 1 < pageCount) {
-    console.log(count, pageCount, page + 1, "entered here");
+
     queryClient.prefetchQuery({
       queryKey: ["bookings", filter, sortBy, { pageSize }, page + 1],
       queryFn: () => getBookings({ filter, sortBy, page: page + 1, pageSize }),

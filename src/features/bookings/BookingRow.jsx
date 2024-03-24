@@ -49,11 +49,11 @@ const Amount = styled.div`
 function BookingRow({
   booking: {
     id: bookingId,
-    created_at,
+  
     startDate,
     endDate,
     numNights,
-    numGuests,
+   
     totalPrice = 45,
     status = "unconfirmed",
     guests: { fullName: guestName, email },
@@ -100,7 +100,7 @@ function BookingRow({
           variation="secondary"
           tooltip="details"
           onClick={() => {
-            console.log("clicked");
+
             navigate(`/bookings/${bookingId}`, { state: location });
           }}
         >

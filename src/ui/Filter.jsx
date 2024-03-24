@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
@@ -59,6 +60,11 @@ function Filter({ filterIdentifier, options = [] }) {
       ))}
     </StyledFilter>
   );
+}
+
+Filter.propTypes = {
+  filterIdentifier: PropTypes.string,
+  options: PropTypes.array
 }
 
 export default Filter;

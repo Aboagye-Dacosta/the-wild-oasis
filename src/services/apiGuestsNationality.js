@@ -6,7 +6,7 @@ export async function getCountries() {
   );
 
   if (status === 200 && statusText === "OK") {
-    console.log(data);
+
     return data;
   }
 

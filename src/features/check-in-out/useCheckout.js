@@ -11,8 +11,8 @@ export function useCheckout() {
   const { isPending: isCheckingOut, mutate: checkout } = useMutation({
     mutationFn: ({ bookingId, checkedOut }) =>
       updateBooking(bookingId, checkedOut),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+
       toast.success(`Guest successfully checked out`);
       queryClient.invalidateQueries({
         queryKey: ["bookings"],

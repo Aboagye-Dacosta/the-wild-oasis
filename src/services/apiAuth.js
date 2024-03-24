@@ -1,17 +1,19 @@
 import supabase, { supabaseUrl } from "../services/supabase";
 
 export async function login({ email, password }) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { data: { user } = {}, error } = await supabase.auth.signInWithPassword(
+    {
+      email,
+      password,
+    }
+  );
 
   if (error) {
+
     throw new Error(error.message);
   }
 
-  console.log(data);
-  return data;
+  return user;
 }
 
 export async function getUser() {
@@ -19,13 +21,13 @@ export async function getUser() {
 
   if (!session.session) return null;
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data: { user } = {}, error } = await supabase.auth.getUser();
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
+  return user;
 }
 
 export async function logout() {
@@ -38,7 +40,7 @@ export async function logout() {
   return data;
 }
 export async function signup({ email, password, fullName }) {
-  const { data, error } = await supabase.auth.signUp({
+  const { data: { user } = {}, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -53,7 +55,9 @@ export async function signup({ email, password, fullName }) {
     throw new Error(error.message);
   }
 
-  return data;
+
+
+  return user;
 }
 
 export async function updateUser({ fullName, password, avatar }) {

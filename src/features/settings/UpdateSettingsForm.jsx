@@ -18,7 +18,7 @@ function UpdateSettingsForm() {
   const { isUpdating, updateSettings } = useUpdateSettings();
 
   const handleSubmit = (e, label) => {
-    console.log(e.target.value, label);
+
     updateSettings({ [label]: e.target.value });
   };
 

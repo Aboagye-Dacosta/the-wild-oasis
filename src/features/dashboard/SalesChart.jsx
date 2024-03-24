@@ -66,7 +66,7 @@ function SalesChart({ numDays, bookings = [] }) {
     [allDays, bookings]
   );
 
-  console.log(data);
+
 
   return (
     <StyledSalesChart>
@@ -90,7 +90,7 @@ function SalesChart({ numDays, bookings = [] }) {
             fill={colors.totalSales.fill}
             strokeWidth={3}
             stroke={colors.totalSales.stroke}
-            onClick={(e) => console.log(e)}
+
             name="Total Sales"
             unit="$"
           />
@@ -100,7 +100,7 @@ function SalesChart({ numDays, bookings = [] }) {
             fill={colors.extrasSales.fill}
             strokeWidth={3}
             stroke={colors.extrasSales.stroke}
-            onClick={(e) => console.log(e)}
+
             name="Extras Sales"
             unit="$"
           />

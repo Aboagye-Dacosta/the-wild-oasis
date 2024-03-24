@@ -1,9 +1,9 @@
+import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useUser } from "../features/authentication/useUser";
-
 import Spinner from "../ui/Spinner";
 
 const FullPage = styled.div`
@@ -14,9 +14,7 @@ const FullPage = styled.div`
 
 function AuthProvider({ children }) {
   const navigate = useNavigate();
-  const { isLoadingUser, isAuthenticated, user } = useUser();
-
-  console.log(user);
+  const { isLoadingUser, isAuthenticated } = useUser();
 
   useEffect(() => {
     if (!isAuthenticated && !isLoadingUser) navigate("/login");
@@ -32,5 +30,9 @@ function AuthProvider({ children }) {
 
   if (isAuthenticated) return children;
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.any,
+};
 
 export default AuthProvider;

@@ -26,7 +26,9 @@ function LoginForm() {
   const [email, setEmail] = useState("mogoseb861@mnsaf.com");
   const [password, setPassword] = useState("pass12345");
 
-  function handleSubmit() {
+  function handleSubmit (e)
+  {
+    e.preventDefault()
     if (!email || !password)
       return toast.error("email and password are required");
     login({ email, password });

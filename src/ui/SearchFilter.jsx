@@ -1,5 +1,5 @@
+import PropTypes from "prop-types"
 import { createContext, useContext, useEffect, useState } from "react";
-import Select from "react-select";
 import styled from "styled-components";
 
 import Button from "./Button";
@@ -64,6 +64,10 @@ export function SearchFilterProvider({ children }) {
   );
 }
 
+SearchFilterProvider.propTypes = {
+  children: PropTypes.any
+}
+
 //search component
 function SearchFilter({ searchableProps = [] }) {
   const {
@@ -123,6 +127,10 @@ function SearchFilter({ searchableProps = [] }) {
       </StyledControls>
     </StyledSearchFilter>
   );
+}
+
+SearchFilter.propTypes = {
+  searchableProps: PropTypes.array
 }
 
 export default SearchFilter;

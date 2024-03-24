@@ -12,7 +12,7 @@ export function useRecentBookings() {
 
   const lastDate = subDays(new Date(), numDays).toISOString();
 
-  console.log(lastDate);
+
 
   const { isPending: isLoadingBookingsAfterDate, data: bookingsAfterDate } =
     useQuery({

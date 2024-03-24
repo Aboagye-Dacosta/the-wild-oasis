@@ -81,7 +81,7 @@ function SignupForm() {
               message: "Password Confirm is required",
             },
             validate: (value) => {
-              console.log(value);
+
               return (
                 getValues()?.password === value ||
                 "password and password confirm must be the same"
