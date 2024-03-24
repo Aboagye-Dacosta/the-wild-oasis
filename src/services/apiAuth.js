@@ -9,11 +9,28 @@ export async function login({ email, password }) {
   );
 
   if (error) {
-
     throw new Error(error.message);
   }
 
   return user;
+}
+export async function loadRoles() {
+  const { data, error } = await supabase.from("roles").select("*");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+export async function loadRoutes() {
+  const { data, error } = await supabase.from("routes").select("*");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }
 
 export async function getUser() {
@@ -39,7 +56,7 @@ export async function logout() {
 
   return data;
 }
-export async function signup({ email, password, fullName }) {
+export async function signup({ email, password, fullName, role }) {
   const { data: { user } = {}, error } = await supabase.auth.signUp({
     email,
     password,
@@ -47,6 +64,7 @@ export async function signup({ email, password, fullName }) {
       data: {
         fullName,
         avatar: "",
+        role,
       },
     },
   });
@@ -55,12 +73,10 @@ export async function signup({ email, password, fullName }) {
     throw new Error(error.message);
   }
 
-
-
   return user;
 }
 
-export async function updateUser({ fullName, password, avatar }) {
+export async function updateUser({ fullName, password, avatar, role }) {
   //check the update data
   let updateData = {};
   if (fullName) updateData = { data: { fullName } };

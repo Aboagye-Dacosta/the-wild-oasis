@@ -12,6 +12,7 @@ function Select(props) {
           backgroundColor: "var(--color-grey-0)",
           color: "var(--color-grey-700)",
           border: "none",
+          boxShadow: "var(--shadow-md)"
         }),
         menu: (props) => ({
           ...props,

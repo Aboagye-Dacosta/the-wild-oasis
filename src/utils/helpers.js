@@ -60,3 +60,7 @@ export const searchValueInItem = (value, props, item) => {
 
   return false;
 };
+
+
+export const capitalize = (value) =>
+  value.slice(0, 1).toUpperCase().concat(value.slice(1));

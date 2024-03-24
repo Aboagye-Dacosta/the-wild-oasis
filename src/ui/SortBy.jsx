@@ -6,6 +6,7 @@ import makeAnimated from "react-select/animated";
 import styled from "styled-components";
 
 import Row from "./Row";
+import { capitalize } from "../utils/helpers";
 
 const StyledSortBy = styled.div`
   display: flex;
@@ -40,8 +41,6 @@ const Label = styled.span`
 `;
 
 const animated = makeAnimated();
-const capitalize = (value) =>
-  value.slice(0, 1).toUpperCase().concat(value.slice(1));
 
 function SortBy({ options = [] }) {
   const [searchParams, setSearchParams] = useSearchParams();

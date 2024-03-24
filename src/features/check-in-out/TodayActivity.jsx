@@ -45,7 +45,7 @@ function Today() {
   return (
     <StyledToday>
       <Row type="horizontal">
-        <Heading as="h2">Today</Heading>
+        <Heading as="h2">Today&apos;s Activities</Heading>
       </Row>
       {isLoadingTodaysActivities ? (
         <Spinner />

@@ -5,6 +5,10 @@ import Input from "../../ui/Input";
 
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import ControlledSelect from "../../ui/ControlledSelect";
+import Select from "../../ui/Select";
+import { capitalize } from "../../utils/helpers";
+import { useRoles } from "./useRoles";
 import { useSignup } from "./useSignup";
 
 // Email regex: /\S+@\S+\.\S+/
@@ -16,15 +20,18 @@ const StyledForm = styled(Form)`
 
 function SignupForm() {
   const { isSigningUp, signup } = useSignup();
+  const { roles, isLoadingRoles } = useRoles();
   const {
     handleSubmit,
     register,
     formState: { errors },
+    control,
     getValues,
   } = useForm();
 
   const onSubmit = (data) => {
-    signup(data);
+    console.log(data);
+    signup({ ...data, role: data.role.value });
   };
 
   return (
@@ -54,6 +61,24 @@ function SignupForm() {
           })}
         />
       </FormRow>
+      <FormRow label="User role" error={errors?.role?.message}>
+        <ControlledSelect
+          control={control}
+          message="user role is required"
+          name="role"
+        >
+          <Select
+            options={
+              isLoadingRoles
+                ? [{ label: "loading...", value: "loading..." }]
+                : roles.map((role) => ({
+                    value: role.role,
+                    label: capitalize(role.role),
+                  }))
+            }
+          />
+        </ControlledSelect>
+      </FormRow>
 
       <FormRow
         label="Password (min 8 characters)"
@@ -81,7 +106,6 @@ function SignupForm() {
               message: "Password Confirm is required",
             },
             validate: (value) => {
-
               return (
                 getValues()?.password === value ||
                 "password and password confirm must be the same"

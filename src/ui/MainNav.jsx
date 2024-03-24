@@ -7,6 +7,8 @@ import {
 } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../context/AuthContext";
+import Spinner from "./Spinner";
 
 const NavList = styled.ul`
   display: flex;
@@ -53,38 +55,38 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
+const icons = {
+  dashboard: <HiOutlineHome />,
+  bookings: <HiOutlineCalendarDays />,
+  cabins: <HiOutlineHomeModern />,
+  guests: <HiOutlineHomeModern />,
+  users: <HiOutlineUsers />,
+  settings: <HiOutlineCog6Tooth />,
+};
+
 function MainNav() {
+  const { role, routes, isLoadingRoutes, isLoadingUser } = useAuth();
+
+  if (isLoadingRoutes || isLoadingUser) return <Spinner />;
+
+  const displayRoutes = routes
+    .filter((route) => route.roles.includes(role))
+    .map((route) => (
+      <li key={route.id}>
+        <StyledNavLink to={`/${route.route}`}>
+          {icons[route.route]}
+          <span>{route.route}</span>
+        </StyledNavLink>
+      </li>
+    ));
+
+  console.log(displayRoutes);
+
   return (
     <nav>
       <NavList>
-        <li>
-          <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Home</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/bookings">
-            <HiOutlineCalendarDays />
-            <span>Bookings</span>
-          </StyledNavLink>
-          <StyledNavLink to="/cabins">
-            <HiOutlineHomeModern />
-            <span>Cabins</span>
-          </StyledNavLink>
-          <StyledNavLink to="/guests">
-            <HiOutlineHomeModern />
-            <span>Guests</span>
-          </StyledNavLink>
-          <StyledNavLink to="/users">
-            <HiOutlineUsers />
-            <span>Users</span>
-          </StyledNavLink>
-          <StyledNavLink to="/settings">
-            <HiOutlineCog6Tooth />
-            <span>Settings</span>
-          </StyledNavLink>
-        </li>
+    
+        {displayRoutes}
       </NavList>
     </nav>
   );
