@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdOutlineMoreVert } from "react-icons/md";
 import styled from "styled-components";
@@ -72,6 +72,7 @@ function Menus({ children }) {
   const [menuId, setMenuId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(null);
+  const [element, setElement] = useState(null);
 
   const closeMenu = () => setMenuId("");
   const openMenu = setMenuId;
@@ -84,10 +85,12 @@ function Menus({ children }) {
         isOpen,
         menuId,
         position,
+        element,
         closeMenu,
         openMenu,
         setMenuPosition,
         open,
+        setElement,
       }}
     >
       {children}
@@ -96,10 +99,11 @@ function Menus({ children }) {
 }
 
 function ToggleButton({ id }) {
-  const { menuId, openMenu, closeMenu, setMenuPosition } =
+  const { menuId, openMenu, closeMenu, setMenuPosition, setElement } =
     useContext(MenusContext);
 
   const handleToggleMenu = (e) => {
+    e.stopPropagation();
     const rect = e.target.getBoundingClientRect();
     const position = {
       x: window.innerWidth - rect.x - rect.width,
@@ -107,6 +111,7 @@ function ToggleButton({ id }) {
     };
 
     setMenuPosition(position);
+    setElement(e);
     menuId === "" || id !== menuId ? openMenu(id) : closeMenu();
   };
 
@@ -118,8 +123,16 @@ function ToggleButton({ id }) {
 }
 
 function List({ children, id }) {
-  const { position, menuId, closeMenu } = useContext(MenusContext);
-  const ref = useCloseClickOutside(closeMenu);
+  let { position, menuId, closeMenu, element, setMenuPosition } =
+    useContext(MenusContext);
+  const ref = useCloseClickOutside(closeMenu, false);
+
+  useEffect(() => {
+    const screenPosition = element?.target?.getBoundingClientRect();
+    const positionRelativeToDocument =
+      screenPosition?.top + document.documentElement.scrollTop + 40;
+    setMenuPosition((state) => ({ ...state, y: positionRelativeToDocument }));
+  }, [element, setMenuPosition]);
 
   if (id !== menuId) return null;
 
