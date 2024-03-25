@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-import Button from "../../ui/Button";
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
-import RolesList from "./RolesList";
+import RolesDetails from "./RolesDetails";
 import RoutesList from "./RoutesList";
 
 const StyledRow = styled(Row)`
@@ -28,8 +27,7 @@ function RoutesDetails() {
       <div>
         <StyledRow>
           <Heading as="h3">Roles</Heading>
-          <RolesList />
-          <Button>Add new role</Button>
+          <RolesDetails />
         </StyledRow>
       </div>
     </>
