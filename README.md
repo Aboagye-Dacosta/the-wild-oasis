@@ -14,7 +14,7 @@ Simple Hotel booking management application with role based authentication and r
 - Styled-Components
 
 ## Installation
-1. Clone the repository: `[GitHub Repo URL]`
+1. Clone the repository: [GitHub Repo URL](https://github.com/Aboagye-Dacosta/the-wild-oasis)
 2. Install dependencies.
 3. Change the supabase client and set up the following tables `bookings` `guests` `roles` `routes` `cabins`
 
