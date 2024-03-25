@@ -12,6 +12,7 @@ const StyledHeader = styled.header`
   align-items:center;
   justify-content: flex-end;
 `;
+
 function Header() {
   return (
     <StyledHeader>

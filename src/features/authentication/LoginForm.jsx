@@ -23,8 +23,8 @@ const StyledForm = styled(Form)`
 function LoginForm() {
   const { isLoggingInUser, login } = useAuthLogin();
 
-  const [email, setEmail] = useState("mogoseb861@mnsaf.com");
-  const [password, setPassword] = useState("pass12345");
+  const [email, setEmail] = useState("logoso2345@nimadir.com");
+  const [password, setPassword] = useState("12345678");
 
   function handleSubmit (e)
   {

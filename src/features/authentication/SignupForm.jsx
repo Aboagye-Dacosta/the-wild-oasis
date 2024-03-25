@@ -8,7 +8,7 @@ import styled from "styled-components";
 import ControlledSelect from "../../ui/ControlledSelect";
 import Select from "../../ui/Select";
 import { capitalize } from "../../utils/helpers";
-import { useRoles } from "./useRoles";
+import { useRoles } from "../routes/useRoles";
 import { useSignup } from "./useSignup";
 
 // Email regex: /\S+@\S+\.\S+/

@@ -27,6 +27,12 @@ const Heading = styled.h1.attrs(({ as }) => ({
           text-align: center;
           /* margin: 0 auto; */
         `;
+      case "h6":
+        return css`
+          font-size: 1.5rem;
+          font-weight: 600;
+          /* margin: 0 auto; */
+        `;
     }
   }};
 `;

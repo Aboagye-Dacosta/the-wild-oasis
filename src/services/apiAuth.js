@@ -46,6 +46,18 @@ export async function getUser() {
 
   return user;
 }
+export async function getUsers() {
+  const {
+    data: { users },
+    error,
+  } = await supabase.auth.admin.listUsers();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return users;
+}
 
 export async function logout() {
   const { data, error } = await supabase.auth.signOut();
@@ -79,7 +91,7 @@ export async function signup({ email, password, fullName, role }) {
 export async function updateUser({ fullName, password, avatar, role }) {
   //check the update data
   let updateData = {};
-  if (fullName) updateData = { data: { fullName } };
+  if (fullName) updateData = { data: { fullName, role } };
   if (password) updateData = { password };
 
   //update the data

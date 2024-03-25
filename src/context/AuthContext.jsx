@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { useRoutes } from "../features/authentication/useRoutes";
+import { useRoutes } from "../features/routes/useRoutes";
 import { useUser } from "../features/authentication/useUser";
 
 import Spinner from "../ui/Spinner";
@@ -19,7 +19,7 @@ const AuthContext = createContext();
 function useAuthContext() {
   const { isLoadingUser, user, isAuthenticated } = useUser();
   const { isLoadingRoutes, routes } = useRoutes();
-  const role  = user?.user_metadata?.role;
+  const role = user?.user_metadata?.role;
 
   console.log(routes);
   return {

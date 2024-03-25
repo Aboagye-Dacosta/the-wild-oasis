@@ -5,6 +5,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { TbRouteSquare2 } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../context/AuthContext";
@@ -62,6 +63,7 @@ const icons = {
   guests: <HiOutlineHomeModern />,
   users: <HiOutlineUsers />,
   settings: <HiOutlineCog6Tooth />,
+  routes: <TbRouteSquare2/>
 };
 
 function MainNav() {
@@ -85,7 +87,6 @@ function MainNav() {
   return (
     <nav>
       <NavList>
-    
         {displayRoutes}
       </NavList>
     </nav>

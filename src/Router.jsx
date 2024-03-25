@@ -17,6 +17,7 @@ import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
+import RouteListing from "./pages/RouteListing";
 // import AuthProvider from "./ui/AuthProvider";
 
 function Router() {
@@ -51,6 +52,7 @@ function Router() {
           <Route path="settings" element={<Settings />} />
           <Route path="account" element={<Account />} />
           <Route path="users" element={<Users />} />
+          <Route path="routes" element={<RouteListing />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

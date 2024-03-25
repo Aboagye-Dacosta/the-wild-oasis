@@ -1,18 +1,20 @@
+import PropTypes from "prop-types";
 import SelectComponent from "react-select";
 import { useDarkMode } from "../context/DarkModeContext";
 
-function Select(props) {
+function Select({ styles, ...props }) {
   const { isDarkMode } = useDarkMode();
   return (
     <SelectComponent
       {...props}
       styles={{
+        ...styles,
         control: (props) => ({
           ...props,
           backgroundColor: "var(--color-grey-0)",
           color: "var(--color-grey-700)",
           border: "none",
-          boxShadow: "var(--shadow-md)"
+          boxShadow: "var(--shadow-md)",
         }),
         menu: (props) => ({
           ...props,
@@ -46,5 +48,9 @@ function Select(props) {
     />
   );
 }
+
+Select.propTypes = {
+  styles: PropTypes.object,
+};
 
 export default Select;
