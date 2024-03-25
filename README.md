@@ -1,8 +1,40 @@
-# React + Vite
+# The wild oasis
+Simple Hotel booking management application with role based authentication and route authorization. The administrator has exclusive access privileges while general users have limited access. The admin can authorize and remove users from the system.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Technologies Used
+- JavaScript
+- Supabase
+- React
+- React-router
+- React-query
+- React-Hook-Forms
+- React-Select
+- Date-fontSize
+- React-Hot-Toast
+- Styled-Components
 
-Currently, two official plugins are available:
+## Installation
+1. Clone the repository: `[GitHub Repo URL]`
+2. Install dependencies.
+3. Change the supabase client and set up the following tables `bookings` `guests` `roles` `routes` `cabins`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Author
+
+<div align="center"> Dacosta Aboagye Solomon</div>
+
+<br/>
+
+<div id="badges" align="center">
+  <a href="https://www.linkedin.com/in/solomon-aboagye-011776210/">
+    <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
+  </a>
+  <a href="https://dacostasolomon-codeman.hashnode.dev">
+    <img src="https://img.shields.io/badge/Hashnode-blue?style=for-the-badge&logo=hashnode&logoColor=white" alt="Hashnode Badge"/>
+  </a>
+  <a href="https://twitter.com/CODE_COSTA">
+    <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
+  </a>
+</div>
+
+![alt text](temp-image/img-1.png)

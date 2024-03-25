@@ -122,6 +122,7 @@ const StyledRow = styled(Row)`
     props.type === "horizontal"
       ? css`
           gap: 3rem;
+          flex-wrap: wrap;
         `
       : css`
           gap: 0.7rem;

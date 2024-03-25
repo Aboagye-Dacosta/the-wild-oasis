@@ -11,13 +11,13 @@ import Bookings from "./pages/Bookings";
 import Cabins from "./pages/Cabins";
 import Checkin from "./pages/Checkin";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
 import Guest from "./pages/Guest";
 import Guests from "./pages/Guests";
 import PageNotFound from "./pages/PageNotFound";
-import Settings from "./pages/Settings";
+import RouteListing from "./pages/RouteListing";
 import Users from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
-import RouteListing from "./pages/RouteListing";
 // import AuthProvider from "./ui/AuthProvider";
 
 function Router() {
@@ -43,16 +43,47 @@ function Router() {
             }
           />
 
-          <Route path="bookings" element={<Bookings />} />
-          <Route path="bookings/:bookingId" element={<Booking />} />
-          <Route path="check-in/:bookingId" element={<Checkin />} />
-          <Route path="cabins" element={<Cabins />} />
-          <Route path="guests" element={<Guests />} />
-          <Route path="guests/:guestId" element={<Guest />} />
-          <Route path="settings" element={<Settings />} />
+          <Route
+            path="bookings"
+            element={<ProtectedRoute element={Bookings} route="bookings" />}
+          />
+          <Route
+            path="bookings/:bookingId"
+            element={<ProtectedRoute element={Booking} route="bookings" />}
+          />
+          <Route
+            path="check-in/:bookingId"
+            element={<ProtectedRoute element={Checkin} route="bookings" />}
+          />
+          <Route
+            path="cabins"
+            element={<ProtectedRoute element={Cabins} route="cabins" />}
+          />
+          <Route
+            path="guests"
+            element={<ProtectedRoute element={Guests} route="guests" />}
+          />
+          <Route
+            path="guests/:guestId"
+            element={<ProtectedRoute element={Guest} route="guests" />}
+          />
+          <Route
+            path="routes"
+            element={<ProtectedRoute element={RouteListing} route="routes" />}
+          />
+          <Route
+            path="settings"
+            element={<ProtectedRoute element={Settings} route="settings" />}
+          />
+          <Route
+            path="users"
+            element={<ProtectedRoute element={Users} route="users" />}
+          />
           <Route path="account" element={<Account />} />
-          <Route path="users" element={<Users />} />
-          <Route path="routes" element={<RouteListing />} />
+          {/* <Route path="guests/:guestId" element={<Guest />} /> */}
+          {/* <Route path="settings" element={<Settings />} /> */}
+          {/* <Route path="users" element={<Users />} /> */}
+          {/* <Route path="routes" element={<RouteListing />} /> */}
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>

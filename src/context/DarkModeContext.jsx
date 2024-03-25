@@ -1,10 +1,14 @@
+import PropTypes from "prop-types"
 import { createContext, useContext, useEffect } from "react";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 
 const DarkModeContext = createContext();
 
 function DarkModeProvider({ children }) {
-  const [isDarkMode, setDarkMode] = useLocalStorageState(false, "darkMode");
+  const [isDarkMode, setDarkMode] = useLocalStorageState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
+    "darkMode"
+  );
 
   useEffect(() => {
     if (isDarkMode) {
@@ -22,6 +26,10 @@ function DarkModeProvider({ children }) {
       {children}
     </DarkModeContext.Provider>
   );
+}
+
+DarkModeProvider.propTypes = {
+  children: PropTypes.any
 }
 
 function useDarkMode() {

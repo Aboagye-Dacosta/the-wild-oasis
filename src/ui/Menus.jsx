@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { MdOutlineMoreVert } from "react-icons/md";
 import styled from "styled-components";
@@ -53,7 +53,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   gap: 1.6rem;
-
+                    
   &:hover {
     background-color: var(--color-grey-50);
   }
@@ -123,16 +123,16 @@ function ToggleButton({ id }) {
 }
 
 function List({ children, id }) {
-  let { position, menuId, closeMenu, element, setMenuPosition } =
+  let { position, menuId, closeMenu } =
     useContext(MenusContext);
   const ref = useCloseClickOutside(closeMenu, false);
 
-  useEffect(() => {
-    const screenPosition = element?.target?.getBoundingClientRect();
-    const positionRelativeToDocument =
-      screenPosition?.top + document.documentElement.scrollTop + 40;
-    setMenuPosition((state) => ({ ...state, y: positionRelativeToDocument }));
-  }, [element, setMenuPosition]);
+  // useEffect(() => {
+  //   const screenPosition = element?.target?.getBoundingClientRect();
+  //   const positionRelativeToDocument =
+  //     screenPosition?.top + document.documentElement.scrollTop + 40;
+  //   setMenuPosition((state) => ({ ...state, y: positionRelativeToDocument }));
+  // }, [element, setMenuPosition]);
 
   if (id !== menuId) return null;
 
