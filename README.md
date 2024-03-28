@@ -1,6 +1,10 @@
 # The wild oasis
 Simple Hotel booking management application with role based authentication and route authorization. The administrator has exclusive access privileges while general users have limited access. The admin can authorize and remove users from the system.
 
+visit [here](https://the-wild-oasis-sigma-gilt.vercel.app)
+use logoso2345@nimadir.com
+and 12345678 as password to login
+
 ## Technologies Used
 - JavaScript
 - Supabase
